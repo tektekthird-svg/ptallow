@@ -2690,7 +2690,27 @@ def check_update():
     except Exception as e:
         print(f"  Update check skipped: {e}")
 
+def ensure_files():
+    files = [
+        ACCOUNTS_FILE,
+        DEPOT_FILE,
+        TOKENS_FILE,
+        RETOKEN_FILE,
+        INVITE_FILE,
+        PROXIES_FILE,
+        WINNER_FILE,
+        LOG_FILE,
+    ]
+    for f in files:
+        if not os.path.exists(f):
+            open(f, "a", encoding="utf-8").close()
+    if not os.path.exists(CONFIG_FILE):
+        save_config(DEFAULT_CONFIG)
+    os.makedirs(QR_FOLDER, exist_ok=True)
+    os.makedirs(SESSIONS_DIR, exist_ok=True)
+
 def main():
+    ensure_files()
     check_update()
     if not check_hwid():
         input("Press Enter to exit...")
@@ -2737,4 +2757,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
